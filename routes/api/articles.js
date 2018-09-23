@@ -1,16 +1,24 @@
 const router = require("express").Router();
 const articlesController = require("../../controllers/articlesController");
+import axios from "axios";
 
-const path = require("path");
-const router = require("express").Router();
-const apiRoutes = require("./api");
 
-// API Routes
-router.use("/api", apiRoutes);
 
-// If no API routes are hit, send the React app
-router.use(function(req, res) {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
+router
+  .route("/")
+  .get(articlesController.findAll)
+  .post(articlesController.create);
+
+router
+  .route("/:id")
+  .get(articlesController.findById)
+  .delete(articlesController.remove);
+
+	return axios.get("/api/articles", { params: { 
+    // api_key: "c26eece03b8b44819878e2226be6b47a", 
+    q: query.topic, 
+    startDate: query.startDate, 
+    endDate: query.endDate,
+    }});
 
 module.exports = router;

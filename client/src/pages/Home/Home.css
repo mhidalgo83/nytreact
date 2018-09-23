@@ -14,3 +14,8 @@
 .card {
     margin-bottom: 1%;
 }
+
+button {
+    float: right;
+    margin: 1%;
+}

@@ -1,21 +1,34 @@
 import React, { Component } from "react";
-//import {ArticleCard, ArticleItem} from "../../components/ArticleCard";
 import { Col, Row, Container } from "../../components/Grid";
 import "./Home.css";
-import API from "../utils/API"
+import Button from "../../components/Button";
+import API from "../../utils/API";
 
 class Home extends Component {
   state = {
     articles: [],
     articleSearch: "",
-    startYear:"",
-    endYear:""
+    startYear: "",
+    endYear: ""
   };
 
   searchArticles = query => {
     API.search(query)
       .then(res => this.setState({ result: res.data }))
       .catch(err => console.log(err));
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    API.getArticles({
+      topic: this.state.articleSearch,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
+    }).then(res =>
+      this.setState({
+        articles: res.data
+      })
+    );
   };
 
   render() {
@@ -29,7 +42,9 @@ class Home extends Component {
                 <div class="card-header">Search for an article</div>
                 <form>
                   <div className="form-group label">
-                    <label for="search">Search: {this.state.articleSearch}</label>
+                    <label for="search">
+                      Search: {this.state.articleSearch}
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -38,7 +53,9 @@ class Home extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label for="startYear">Start Year: {this.state.startYear}</label>
+                    <label for="startYear">
+                      Start Year: {this.state.startYear}
+                    </label>
                     <input
                       type="text"
                       className="form-control"
@@ -55,12 +72,13 @@ class Home extends Component {
                       placeholder="ex: 1998"
                     />
                   </div>
-                  <input
-                    class="btn btn-primary"
-                    type="submit"
-                    value="Submit"
-                    id="submit"
-                  />
+                  <Button
+                    onClick={this.handleFormSubmit}
+                    type="primary"
+                    className="input-sm"
+                  >
+                    Search
+                  </Button>
                 </form>
               </div>
             </Col>
